@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>First Crumbs — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --cream:#F7F2E8; --cream-dark:#EDE5D0;
+  --amber:#F0A500; --amber-pale:#FDF6E0; --amber-light:#F7C84A;
+  --sage:#5A8F5A; --sage-light:#7DB57D; --sage-pale:#EAF2EA;
+  --blue:#7AAEC8; --blue-pale:#E8F2F8;
+  --red:#C0392B; --red-pale:#FFE8E8;
+  --text:#3A3228; --text-soft:#7A6E62;
+  --radius:14px;
+}
+body { font-family:'Nunito',sans-serif; background:#F0EDE6; color:var(--text); min-height:100vh; }
+
+/* LOGIN */
+.login-screen {
+min-height:100vh; display:flex; align-items:center; justify-content:center;
+background:var(–cream);
+}
+.login-card {
+background:white; border-radius:20px; padding:2.5rem;
+box-shadow:0 8px 32px rgba(0,0,0,0.1); text-align:center; width:320px;
+}
+.login-card h1 { font-family:‘Playfair Display’,serif; color:var(–sage); font-size:1.6rem; margin:0.5rem 0 0.3rem; }
+.login-card p { color:var(–text-soft); font-size:0.88rem; margin-bottom:1.5rem; }
+.login-input {
+width:100%; border:1.5px solid var(–cream-dark); border-radius:10px;
+padding:0.75rem 1rem; font-family:‘Nunito’,sans-serif; font-size:0.95rem;
+margin-bottom:1rem; outline:none; transition:border-color 0.2s;
+}
+.login-input:focus { border-color:var(–sage); }
+.login-btn {
+width:100%; background:var(–sage); color:white; border:none;
+border-radius:50px; padding:0.85rem; font-family:‘Nunito’,sans-serif;
+font-weight:700; font-size:1rem; cursor:pointer; transition:background 0.2s;
+}
+.login-btn:hover { background:var(–sage-light); }
+
+/* LAYOUT */
+.admin-layout { display:flex; min-height:100vh; }
+.sidebar {
+width:220px; background:var(–sage); color:white;
+padding:1.5rem 1rem; flex-shrink:0;
+display:flex; flex-direction:column; gap:0.3rem;
+}
+.sidebar-logo { font-family:‘Playfair Display’,serif; font-size:1.2rem; padding:0.5rem; margin-bottom:1rem; opacity:0.95; }
+.sidebar-logo span { font-size:0.75rem; display:block; opacity:0.7; font-family:‘Nunito’,sans-serif; font-weight:400; }
+.sidebar-btn {
+background:none; border:none; color:rgba(255,255,255,0.8);
+text-align:left; padding:0.65rem 0.8rem; border-radius:10px;
+font-family:‘Nunito’,sans-serif; font-weight:600; font-size:0.9rem;
+cursor:pointer; transition:all 0.15s; display:flex; align-items:center; gap:0.6rem;
+}
+.sidebar-btn:hover, .sidebar-btn.active { background:rgba(255,255,255,0.2); color:white; }
+.sidebar-spacer { flex:1; }
+.sidebar-logout {
+background:rgba(255,255,255,0.12); border:none; color:rgba(255,255,255,0.8);
+border-radius:10px; padding:0.65rem 0.8rem;
+font-family:‘Nunito’,sans-serif; font-weight:600; font-size:0.88rem;
+cursor:pointer; text-align:left;
+}
+
+.main-content { flex:1; padding:2rem; overflow-y:auto; }
+.section { display:none; }
+.section.active { display:block; }
+.section-header { margin-bottom:1.5rem; }
+.section-header h1 { font-family:‘Playfair Display’,serif; font-size:1.8rem; color:var(–sage); }
+.section-header p { color:var(–text-soft); font-size:0.9rem; margin-top:0.2rem; }
+
+/* CARDS */
+.card {
+background:white; border-radius:var(–radius);
+padding:1.5rem; margin-bottom:1.5rem;
+box-shadow:0 2px 10px rgba(0,0,0,0.06);
+}
+.card h2 { font-family:‘Playfair Display’,serif; color:var(–text); font-size:1.1rem; margin-bottom:1rem; }
+.card-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1rem; }
+.stat-card {
+background:var(–cream); border-radius:12px; padding:1.2rem;
+text-align:center;
+}
+.stat-num { font-size:2rem; font-weight:700; color:var(–sage); }
+.stat-label { font-size:0.8rem; color:var(–text-soft); font-weight:600; }
+
+/* TABLE */
+table { width:100%; border-collapse:collapse; font-size:0.88rem; }
+th { text-align:left; padding:0.6rem 0.8rem; font-weight:700; color:var(–text-soft); border-bottom:2px solid var(–cream-dark); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.04em; }
+td { padding:0.7rem 0.8rem; border-bottom:1px solid var(–cream-dark); }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(–cream); }
+
+.badge { display:inline-block; border-radius:20px; padding:0.2rem 0.6rem; font-size:0.75rem; font-weight:700; }
+.badge-green { background:var(–sage-pale); color:var(–sage); }
+.badge-amber { background:var(–amber-pale); color:var(–amber); }
+.badge-red { background:var(–red-pale); color:var(–red); }
+
+/* FORM */
+.form-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:1rem; }
+.form-group { display:flex; flex-direction:column; gap:0.35rem; }
+.form-group label { font-size:0.82rem; font-weight:700; color:var(–text); }
+.form-group input, .form-group select, .form-group textarea {
+border:1.5px solid var(–cream-dark); border-radius:9px;
+padding:0.65rem 0.9rem; font-family:‘Nunito’,sans-serif;
+font-size:0.93rem; background:white; color:var(–text);
+outline:none; transition:border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus { border-color:var(–sage); }
+
+.btn { border:none; border-radius:50px; padding:0.6rem 1.4rem; font-family:‘Nunito’,sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; transition:all 0.2s; }
+.btn-sage { background:var(–sage); color:white; }
+.btn-sage:hover { background:var(–sage-light); }
+.btn-amber { background:var(–amber); color:white; }
+.btn-amber:hover { background:var(–amber-light); }
+.btn-red { background:var(–red-pale); color:var(–red); }
+.btn-red:hover { background:var(–red); color:white; }
+.btn-sm { padding:0.35rem 0.85rem; font-size:0.8rem; }
+
+/* INVENTORY */
+.inv-row { display:flex; align-items:center; gap:1rem; padding:0.7rem 0; border-bottom:1px solid var(–cream-dark); }
+.inv-row:last-child { border-bottom:none; }
+.inv-name { flex:1; font-weight:600; font-size:0.92rem; }
+.inv-unit { font-size:0.8rem; color:var(–text-soft); width:80px; }
+.inv-qty-input {
+width:80px; border:1.5px solid var(–cream-dark); border-radius:8px;
+padding:0.4rem 0.6rem; font-family:‘Nunito’,sans-serif;
+font-size:0.9rem; text-align:center; outline:none;
+}
+.inv-qty-input:focus { border-color:var(–sage); }
+.inv-status { width:90px; text-align:right; }
+
+/* MENU ITEM EDITOR */
+.menu-item-card {
+border:1.5px solid var(–cream-dark); border-radius:12px;
+padding:1rem; margin-bottom:1rem; background:var(–cream);
+}
+.menu-item-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:0.8rem; }
+.menu-item-header span { font-weight:700; }
+
+@media(max-width:700px){
+.admin-layout { flex-direction:column; }
+.sidebar { width:100%; flex-direction:row; flex-wrap:wrap; padding:0.75rem; }
+.sidebar-logo { width:100%; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- LOGIN -->
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div style="font-size:3rem">🧁</div>
+    <h1>First Crumbs</h1>
+    <p>Admin Dashboard</p>
+    <input class="login-input" type="password" id="adminPwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()"/>
+    <button class="login-btn" onclick="login()">Sign In</button>
+  </div>
+</div>
+
+<!-- ADMIN APP -->
+
+<div id="adminApp" style="display:none">
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-logo">First Crumbs 🧁<span>Admin Panel</span></div>
+    <button class="sidebar-btn active" onclick="showSection('dashboard',this)">📊 Dashboard</button>
+    <button class="sidebar-btn" onclick="showSection('orders',this)">📋 Orders</button>
+    <button class="sidebar-btn" onclick="showSection('menu',this)">🍞 Menu</button>
+    <button class="sidebar-btn" onclick="showSection('inventory',this)">📦 Inventory</button>
+    <button class="sidebar-btn" onclick="showSection('recipes',this)">📖 Recipes</button>
+    <button class="sidebar-btn" onclick="showSection('settings',this)">⚙️ Settings</button>
+    <div class="sidebar-spacer"></div>
+    <button class="sidebar-logout" onclick="logout()">← Sign Out</button>
+  </aside>
+
+  <main class="main-content">
+
+```
+<!-- DASHBOARD -->
+<div class="section active" id="sec-dashboard">
+  <div class="section-header">
+    <h1>Good morning, Rani 👋</h1>
+    <p>Here's your week at a glance</p>
+  </div>
+  <div class="card">
+    <div class="card-grid">
+      <div class="stat-card"><div class="stat-num" id="stat-orders">—</div><div class="stat-label">Orders This Week</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-revenue">—</div><div class="stat-label">Estimated Revenue</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-items">—</div><div class="stat-label">Items to Bake</div></div>
+      <div class="stat-card"><div class="stat-num" id="stat-inv">—</div><div class="stat-label">Low Stock Alerts</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>⚡ Quick Actions</h2>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <button class="btn btn-sage" onclick="showSection('inventory',document.querySelector('[onclick*=inventory]'))">Update Inventory</button>
+      <button class="btn btn-amber" onclick="triggerWeeklyEmail()">Send Weekly Email Now</button>
+      <button class="btn btn-sage" onclick="showSection('orders',document.querySelector('[onclick*=orders]'))">View This Week's Orders</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>📅 This Week's Timeline</h2>
+    <table>
+      <tr><td>Monday</td><td>Orders open for the week</td><td><span class="badge badge-green">Done</span></td></tr>
+      <tr><td>Wednesday</td><td>Inventory review due</td><td><span class="badge badge-amber" id="invBadge">Pending</span></td></tr>
+      <tr><td>Thursday 5:00 PM</td><td>Orders close</td><td><span class="badge badge-amber">Upcoming</span></td></tr>
+      <tr><td>Thursday 7:00 PM</td><td>Weekly digest email sent to you</td><td><span class="badge badge-amber">Upcoming</span></td></tr>
+      <tr><td>Thursday (all day)</td><td>Pickup window: 9 AM – 2 PM</td><td><span class="badge badge-amber">Upcoming</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ORDERS -->
+<div class="section" id="sec-orders">
+  <div class="section-header">
+    <h1>Orders</h1>
+    <p>All orders placed this week</p>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h2 style="margin:0">This Week's Orders</h2>
+      <button class="btn btn-amber btn-sm" onclick="loadOrders()">↻ Refresh</button>
+    </div>
+    <div id="ordersTable"><p style="color:var(--text-soft);font-size:0.9rem;">Loading orders...</p></div>
+  </div>
+</div>
+
+<!-- MENU MANAGEMENT -->
+<div class="section" id="sec-menu">
+  <div class="section-header">
+    <h1>Menu</h1>
+    <p>Manage your weekly offerings</p>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h2 style="margin:0">Current Menu Items</h2>
+      <button class="btn btn-sage btn-sm" onclick="addMenuItem()">+ Add Item</button>
+    </div>
+    <div id="menuEditor"></div>
+    <button class="btn btn-sage" style="margin-top:1rem" onclick="saveMenu()">Save Menu</button>
+  </div>
+</div>
+
+<!-- INVENTORY -->
+<div class="section" id="sec-inventory">
+  <div class="section-header">
+    <h1>Inventory</h1>
+    <p>Update your stock levels — best done every Wednesday</p>
+  </div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h2 style="margin:0">Current Stock</h2>
+      <button class="btn btn-sage btn-sm" onclick="addIngredient()">+ Add Ingredient</button>
+    </div>
+    <div id="inventoryList"></div>
+    <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+      <button class="btn btn-sage" onclick="saveInventory()">Save Inventory</button>
+      <button class="btn btn-amber" onclick="markInventoryDone()">✓ Mark Wednesday Check Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- RECIPES -->
+<div class="section" id="sec-recipes">
+  <div class="section-header">
+    <h1>Recipes</h1>
+    <p>Linked to your Google Sheet — quantities auto-scale based on orders</p>
+  </div>
+  <div class="card">
+    <h2>Google Sheet Link</h2>
+    <p style="font-size:0.88rem;color:var(--text-soft);margin-bottom:1rem;">Paste your Google Sheet URL below. Each tab should be named after a menu item ID. Columns: Ingredient, Amount (per 1 batch), Unit.</p>
+    <div class="form-row">
+      <div class="form-group" style="grid-column:1/-1">
+        <label>Google Sheet URL</label>
+        <input type="url" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/..."/>
+      </div>
+    </div>
+    <button class="btn btn-sage" onclick="saveSheetUrl()">Save & Verify</button>
+  </div>
+  <div class="card">
+    <h2>Recipe Preview (scaled to order quantities)</h2>
+    <p style="font-size:0.88rem;color:var(--text-soft);margin-bottom:1rem;">This is a preview of what will be in your Thursday email based on this week's orders.</p>
+    <div id="recipePreview"><p style="color:var(--text-soft);font-size:0.9rem;">No orders yet this week.</p></div>
+  </div>
+</div>
+
+<!-- SETTINGS -->
+<div class="section" id="sec-settings">
+  <div class="section-header"><h1>Settings</h1><p>Configure your bakery</p></div>
+  <div class="card">
+    <h2>Automation Settings</h2>
+    <div class="form-row">
+      <div class="form-group"><label>Your Email (for weekly digest)</label><input type="email" id="ownerEmail" placeholder="you@email.com"/></div>
+      <div class="form-group"><label>Apps Script URL</label><input type="url" id="scriptUrl" placeholder="https://script.google.com/..."/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Order Cutoff Day</label>
+        <select id="cutoffDay"><option value="4">Thursday</option><option value="3">Wednesday</option><option value="5">Friday</option></select>
+      </div>
+      <div class="form-group"><label>Order Cutoff Time</label><input type="time" id="cutoffTime" value="17:00"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Digest Email Time (PDT)</label><input type="time" id="digestTime" value="19:00"/></div>
+      <div class="form-group"><label>Admin Password</label><input type="password" id="newPwd" placeholder="Change password"/></div>
+    </div>
+    <button class="btn btn-sage" onclick="saveSettings()">Save Settings</button>
+  </div>
+</div>
+```
+
+  </main>
+</div>
+</div>
+
+<script>
+// ============================================================
+// AUTH (simple password — enhance with proper auth later)
+// ============================================================
+const ADMIN_PWD = localStorage.getItem('fcAdminPwd') || 'firstcrumbs2024';
+const APPS_SCRIPT_URL = localStorage.getItem('fcScriptUrl') || '';
+
+function login() {
+  const pwd = document.getElementById('adminPwd').value;
+  if (pwd === ADMIN_PWD) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminApp').style.display = 'block';
+    initAdmin();
+  } else {
+    alert('Incorrect password.');
+  }
+}
+
+function logout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminApp').style.display = 'none';
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'orders') loadOrders();
+  if (name === 'menu') renderMenuEditor();
+  if (name === 'inventory') renderInventory();
+}
+
+// ============================================================
+// LOCAL STATE (replace with Apps Script calls in production)
+// ============================================================
+let menuItems = JSON.parse(localStorage.getItem('fcMenu') || 'null') || [
+  { id:'sourdough-loaf', emoji:'🍞', name:'Classic Sourdough Loaf', price:12, maxQty:10, available:true, tag:'Signature', tagType:'' },
+  { id:'sourdough-focaccia', emoji:'🫓', name:'Sourdough Focaccia', price:10, maxQty:8, available:true, tag:'Signature', tagType:'' },
+  { id:'blueberry-muffins', emoji:'🫐', name:'Blueberry Muffins', price:8, maxQty:12, available:true, tag:'This Month', tagType:'rotating' },
+  { id:'english-muffins', emoji:'🥯', name:'Sourdough English Muffins (6-pack)', price:9, maxQty:8, available:true, tag:'This Month', tagType:'rotating' },
+];
+
+let inventory = JSON.parse(localStorage.getItem('fcInventory') || 'null') || [
+  { id:'bread-flour', name:'Bread Flour', qty:5000, unit:'g', minQty:500 },
+  { id:'starter', name:'Sourdough Starter', qty:300, unit:'g', minQty:100 },
+  { id:'salt', name:'Sea Salt', qty:200, unit:'g', minQty:50 },
+  { id:'olive-oil', name:'Olive Oil', qty:500, unit:'ml', minQty:100 },
+  { id:'blueberries', name:'Blueberries', qty:400, unit:'g', minQty:200 },
+  { id:'butter', name:'Butter', qty:250, unit:'g', minQty:100 },
+  { id:'eggs', name:'Eggs', qty:12, unit:'units', minQty:6 },
+  { id:'sugar', name:'Sugar', qty:500, unit:'g', minQty:100 },
+  { id:'milk', name:'Whole Milk', qty:1000, unit:'ml', minQty:250 },
+];
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function initAdmin() {
+  loadDashboard();
+  if (localStorage.getItem('fcScriptUrl')) {
+    document.getElementById('scriptUrl').value = localStorage.getItem('fcScriptUrl');
+  }
+  if (localStorage.getItem('fcOwnerEmail')) {
+    document.getElementById('ownerEmail').value = localStorage.getItem('fcOwnerEmail');
+  }
+}
+
+function loadDashboard() {
+  const orders = JSON.parse(localStorage.getItem('fcOrders') || '[]');
+  const totalItems = orders.reduce((s, o) => s + o.items.reduce((ss, i) => ss + i.qty, 0), 0);
+  const revenue = orders.reduce((s, o) => s + o.total, 0);
+  const lowStock = inventory.filter(i => i.qty <= i.minQty).length;
+
+  document.getElementById('stat-orders').textContent = orders.length;
+  document.getElementById('stat-revenue').textContent = '$' + revenue.toFixed(0);
+  document.getElementById('stat-items').textContent = totalItems;
+  document.getElementById('stat-inv').textContent = lowStock;
+}
+
+// ============================================================
+// ORDERS
+// ============================================================
+function loadOrders() {
+  const orders = JSON.parse(localStorage.getItem('fcOrders') || '[]');
+  const el = document.getElementById('ordersTable');
+  if (orders.length === 0) {
+    el.innerHTML = '<p style="color:var(--text-soft);font-size:0.9rem;text-align:center;padding:2rem">No orders yet this week 🌱</p>';
+    return;
+  }
+  el.innerHTML = `
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>Pickup Time</th><th>Items</th><th>Total</th><th>Notes</th></tr></thead>
+      <tbody>
+        ${orders.map(o => `
+          <tr>
+            <td><strong>${o.firstName} ${o.lastName}</strong></td>
+            <td>${o.email}</td>
+            <td>${o.pickupTime}</td>
+            <td>${o.items.map(i => `${i.qty}× ${i.name}`).join('<br/>')}</td>
+            <td><strong>$${o.total.toFixed(2)}</strong></td>
+            <td style="color:var(--text-soft);font-size:0.82rem">${o.notes || '—'}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+}
+
+// ============================================================
+// MENU EDITOR
+// ============================================================
+function renderMenuEditor() {
+  document.getElementById('menuEditor').innerHTML = menuItems.map((item, i) => `
+    <div class="menu-item-card">
+      <div class="menu-item-header">
+        <span>${item.emoji} ${item.name}</span>
+        <button class="btn btn-red btn-sm" onclick="removeMenuItem(${i})">Remove</button>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Emoji</label><input value="${item.emoji}" onchange="menuItems[${i}].emoji=this.value"/></div>
+        <div class="form-group"><label>Name</label><input value="${item.name}" onchange="menuItems[${i}].name=this.value"/></div>
+        <div class="form-group"><label>Price ($)</label><input type="number" value="${item.price}" onchange="menuItems[${i}].price=Number(this.value)"/></div>
+        <div class="form-group"><label>Max Qty/Week</label><input type="number" value="${item.maxQty}" onchange="menuItems[${i}].maxQty=Number(this.value)"/></div>
+        <div class="form-group"><label>Tag Label</label><input value="${item.tag}" onchange="menuItems[${i}].tag=this.value"/></div>
+        <div class="form-group"><label>Available?</label>
+          <select onchange="menuItems[${i}].available=this.value==='true'">
+            <option value="true" ${item.available?'selected':''}>Yes</option>
+            <option value="false" ${!item.available?'selected':''}>No (sold out)</option>
+          </select>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function addMenuItem() {
+  menuItems.push({ id:'item-'+Date.now(), emoji:'🍞', name:'New Item', price:10, maxQty:8, available:true, tag:'New', tagType:'' });
+  renderMenuEditor();
+}
+
+function removeMenuItem(i) {
+  if (confirm('Remove this menu item?')) { menuItems.splice(i,1); renderMenuEditor(); }
+}
+
+function saveMenu() {
+  localStorage.setItem('fcMenu', JSON.stringify(menuItems));
+  alert('✅ Menu saved! Remember to update first-crumbs.html with the new menu data.');
+}
+
+// ============================================================
+// INVENTORY
+// ============================================================
+function renderInventory() {
+  document.getElementById('inventoryList').innerHTML = inventory.map((item, i) => {
+    const low = item.qty <= item.minQty;
+    return `
+      <div class="inv-row">
+        <span class="inv-name">${item.name}</span>
+        <input class="inv-qty-input" type="number" value="${item.qty}" onchange="inventory[${i}].qty=Number(this.value)" min="0"/>
+        <span class="inv-unit">${item.unit}</span>
+        <span class="inv-status">
+          ${low ? '<span class="badge badge-red">Low Stock</span>' : '<span class="badge badge-green">OK</span>'}
+        </span>
+        <button class="btn btn-red btn-sm" onclick="removeIngredient(${i})">×</button>
+      </div>`;
+  }).join('');
+}
+
+function addIngredient() {
+  inventory.push({ id:'ing-'+Date.now(), name:'New Ingredient', qty:0, unit:'g', minQty:100 });
+  renderInventory();
+}
+
+function removeIngredient(i) {
+  inventory.splice(i,1); renderInventory();
+}
+
+function saveInventory() {
+  localStorage.setItem('fcInventory', JSON.stringify(inventory));
+  alert('✅ Inventory saved!');
+  loadDashboard();
+}
+
+function markInventoryDone() {
+  saveInventory();
+  document.getElementById('invBadge').textContent = '✓ Done';
+  document.getElementById('invBadge').className = 'badge badge-green';
+  alert('✅ Wednesday inventory check marked as done!');
+}
+
+// ============================================================
+// SETTINGS
+// ============================================================
+function saveSettings() {
+  const email = document.getElementById('ownerEmail').value;
+  const url = document.getElementById('scriptUrl').value;
+  const pwd = document.getElementById('newPwd').value;
+  if (email) localStorage.setItem('fcOwnerEmail', email);
+  if (url) localStorage.setItem('fcScriptUrl', url);
+  if (pwd) localStorage.setItem('fcAdminPwd', pwd);
+  alert('✅ Settings saved!');
+}
+
+function saveSheetUrl() {
+  const url = document.getElementById('sheetUrl').value;
+  localStorage.setItem('fcSheetUrl', url);
+  alert('✅ Google Sheet URL saved! The Apps Script will use this to pull recipes.');
+}
+
+// ============================================================
+// TRIGGER EMAIL MANUALLY
+// ============================================================
+async function triggerWeeklyEmail() {
+  const scriptUrl = localStorage.getItem('fcScriptUrl');
+  if (!scriptUrl) { alert('Please add your Apps Script URL in Settings first.'); return; }
+  if (!confirm('Send the weekly digest email now?')) return;
+  try {
+    await fetch(scriptUrl, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'sendWeeklyDigest' })
+    });
+    alert('✅ Digest email triggered!');
+  } catch(e) {
+    alert('Request sent (no-cors mode — check your email in a moment).');
+  }
+}
+</script>
+
+</body>
+</html>
