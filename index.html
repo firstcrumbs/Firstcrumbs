@@ -188,10 +188,12 @@ footer {
 
 <footer>© 2025 First Crumbs · California Class A Cottage Food Operation</footer>
 
-<script>
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/firstcrumbs.com/s/AKfycbzOrtms_7uIlBjasHy_CHcQpVOQDThlRHkxs8QTsPn9bniUDBWuhW_TLe7TvaM0qGTpw/exec';
+<iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-async function handleNotify() {
+<script>
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOrtms_7uIlBjasHy_CHcQ-pVOQDThlRHkxs8QTsPn9bniUDBWuhW_TLe7TvaM0qGTpw/exec';
+
+function handleNotify() {
   const email = document.getElementById('emailInput').value.trim();
   if (!email || !email.includes('@')) {
     alert('Please enter a valid email address.');
@@ -202,20 +204,27 @@ async function handleNotify() {
   btn.disabled = true;
   btn.textContent = 'Adding you...';
 
-  try {
-    await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'addToWaitlist', email }),
-    });
-  } catch (err) {
-    // no-cors means we won't get a readable response — that's expected
-    // The request still goes through; silence the error
-  }
+  // Build a hidden form and submit it — bypasses all CORS issues with Apps Script
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = APPS_SCRIPT_URL;
+  form.target = 'hidden_iframe'; // submit into hidden iframe, no page redirect
 
-  document.querySelector('.notify-form').style.display = 'none';
-  document.getElementById('successMsg').style.display = 'block';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'payload';
+  input.value = JSON.stringify({ action: 'addToWaitlist', email });
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+
+  // Show success immediately — we don't wait for a response
+  setTimeout(() => {
+    document.querySelector('.notify-form').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+  }, 400);
 }
 </script>
 </body>
