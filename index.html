@@ -4,775 +4,203 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>First Crumbs — Baked with Love</title>
+<title>First Crumbs — Coming Soon</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-:root {
-  --cream: #F7F2E8;
-  --cream-dark: #EDE5D0;
-  --amber: #F0A500;
-  --amber-light: #F7C84A;
-  --amber-pale: #FDF6E0;
-  --sage: #5A8F5A;
-  --sage-light: #7DB57D;
-  --sage-pale: #EAF2EA;
-  --blue: #7AAEC8;
-  --blue-pale: #E8F2F8;
-  --text: #3A3228;
-  --text-soft: #7A6E62;
-  --radius: 16px;
+body {
+  font-family:'Nunito',sans-serif;
+  background:#F7F2E8;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem;
+  overflow:hidden;
+  position:relative;
 }
-body { font-family:'Nunito',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
 
-/* NAV */
-nav {
-position:sticky; top:0; z-index:100;
-background:rgba(247,242,232,0.96);
-backdrop-filter:blur(8px);
-border-bottom:1.5px solid var(–cream-dark);
-padding:0 2rem;
-display:flex; align-items:center; justify-content:space-between;
-height:64px;
-}
-.nav-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
-.nav-logo-icon { font-size:1.6rem; }
-.nav-logo-text { font-family:‘Playfair Display’,serif; font-size:1.3rem; color:var(–sage); font-weight:600; }
-.nav-links { display:flex; gap:2rem; list-style:none; }
-.nav-links a { text-decoration:none; color:var(–text-soft); font-weight:600; font-size:0.9rem; letter-spacing:0.03em; transition:color 0.2s; }
-.nav-links a:hover, .nav-links a.active { color:var(–sage); }
-.nav-order-btn {
-background:var(–sage); color:white;
-border:none; border-radius:50px;
-padding:0.5rem 1.3rem; font-family:‘Nunito’,sans-serif;
-font-weight:700; font-size:0.9rem; cursor:pointer;
-transition:background 0.2s, transform 0.1s;
-}
-.nav-order-btn:hover { background:var(–sage-light); transform:translateY(-1px); }
+/* background circles */
+.bg { position:fixed; inset:0; pointer-events:none; }
+.bg span { position:absolute; border-radius:50%; opacity:0.1; }
+.bg span:nth-child(1) { width:500px;height:500px;background:#F0A500;top:-150px;right:-150px; }
+.bg span:nth-child(2) { width:350px;height:350px;background:#5A8F5A;bottom:-100px;left:-100px; }
+.bg span:nth-child(3) { width:200px;height:200px;background:#7AAEC8;bottom:100px;right:5%; }
 
-/* PAGES */
-.page { display:none; }
-.page.active { display:block; }
-
-/* ===== HOME ===== */
-.hero {
-min-height: calc(100vh - 64px);
-display:flex; flex-direction:column; align-items:center; justify-content:center;
-text-align:center; padding:4rem 2rem;
-position:relative; overflow:hidden;
+.card {
+position:relative;
+max-width:520px;
+width:100%;
 }
-.hero-bg-circles {
-position:absolute; inset:0; pointer-events:none; overflow:hidden;
-}
-.hero-bg-circles span {
-position:absolute; border-radius:50%; opacity:0.13;
-}
-.hero-bg-circles span:nth-child(1) { width:500px;height:500px; background:var(–amber); top:-120px; right:-120px; }
-.hero-bg-circles span:nth-child(2) { width:300px;height:300px; background:var(–sage); bottom:-60px; left:-80px; }
-.hero-bg-circles span:nth-child(3) { width:180px;height:180px; background:var(–blue); bottom:80px; right:10%; }
 
-.hero-muffin { font-size:5rem; margin-bottom:1rem; animation:gentle-bounce 3s ease-in-out infinite; }
-@keyframes gentle-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+.muffin {
+font-size:5rem;
+display:block;
+margin-bottom:1.5rem;
+animation:float 3s ease-in-out infinite;
+}
+@keyframes float {
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-12px)}
+}
 
-.hero h1 {
+h1 {
 font-family:‘Playfair Display’,serif;
-font-size:clamp(2.8rem, 6vw, 5rem);
-color:var(–sage); line-height:1.1; margin-bottom:0.5rem;
+font-size:clamp(2.5rem,6vw,4rem);
+color:#5A8F5A;
+line-height:1.1;
+margin-bottom:0.5rem;
 }
-.hero h1 em { color:var(–amber); font-style:italic; }
-.hero-tagline {
-font-size:1.15rem; color:var(–text-soft); font-weight:400;
-margin-bottom:2rem; max-width:480px; line-height:1.7;
-}
-.hero-btns { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
-.btn-primary {
-background:var(–sage); color:white;
-border:none; border-radius:50px;
-padding:0.85rem 2rem; font-family:‘Nunito’,sans-serif;
-font-weight:700; font-size:1rem; cursor:pointer;
-transition:all 0.2s; box-shadow:0 4px 15px rgba(90,143,90,0.3);
-}
-.btn-primary:hover { background:var(–sage-light); transform:translateY(-2px); box-shadow:0 6px 20px rgba(90,143,90,0.35); }
-.btn-secondary {
-background:transparent; color:var(–sage);
-border:2px solid var(–sage); border-radius:50px;
-padding:0.85rem 2rem; font-family:‘Nunito’,sans-serif;
-font-weight:700; font-size:1rem; cursor:pointer;
-transition:all 0.2s;
-}
-.btn-secondary:hover { background:var(–sage-pale); transform:translateY(-2px); }
+h1 em { color:#F0A500; font-style:italic; }
 
-.home-features {
-display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:1.5rem; padding:3rem 2rem 4rem; max-width:900px; margin:0 auto;
+.divider {
+width:48px; height:3px;
+background:#F0A500;
+border-radius:2px;
+margin:1.2rem auto;
 }
-.feature-card {
-background:white; border-radius:var(–radius);
-padding:1.8rem 1.5rem; text-align:center;
-box-shadow:0 2px 12px rgba(0,0,0,0.06);
-transition:transform 0.2s, box-shadow 0.2s;
-}
-.feature-card:hover { transform:translateY(-4px); box-shadow:0 8px 24px rgba(0,0,0,0.1); }
-.feature-icon { font-size:2.2rem; margin-bottom:0.8rem; }
-.feature-card h3 { font-family:‘Playfair Display’,serif; color:var(–sage); margin-bottom:0.4rem; font-size:1.1rem; }
-.feature-card p { font-size:0.88rem; color:var(–text-soft); line-height:1.6; }
 
-.home-story {
-background:white; padding:4rem 2rem;
-text-align:center;
+.tagline {
+font-size:1.05rem;
+color:#7A6E62;
+line-height:1.8;
+margin-bottom:2rem;
+max-width:400px;
+margin-left:auto;
+margin-right:auto;
 }
-.home-story-inner { max-width:620px; margin:0 auto; }
-.home-story h2 { font-family:‘Playfair Display’,serif; font-size:2rem; color:var(–sage); margin-bottom:1rem; }
-.home-story p { color:var(–text-soft); line-height:1.9; font-size:0.97rem; }
-.home-story .amber-line { width:48px; height:3px; background:var(–amber); margin:1.2rem auto; border-radius:2px; }
 
-/* ===== MENU ===== */
-.page-header {
-background:white; padding:3rem 2rem 2rem;
-text-align:center; border-bottom:1.5px solid var(–cream-dark);
-}
-.page-header h1 { font-family:‘Playfair Display’,serif; font-size:2.5rem; color:var(–sage); }
-.page-header p { color:var(–text-soft); margin-top:0.5rem; font-size:0.97rem; }
-
-.menu-badge {
-display:inline-block; background:var(–amber-pale);
-color:var(–amber); border:1.5px solid var(–amber-light);
-border-radius:50px; padding:0.3rem 1rem;
-font-size:0.8rem; font-weight:700; margin-top:0.8rem;
+.badge {
+display:inline-block;
+background:#EAF2EA;
+color:#5A8F5A;
+border:1.5px solid #7DB57D;
+border-radius:50px;
+padding:0.5rem 1.4rem;
+font-size:0.88rem;
+font-weight:700;
 letter-spacing:0.04em;
+margin-bottom:2rem;
 }
 
-.menu-grid {
-display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-gap:1.5rem; padding:2.5rem 2rem; max-width:1100px; margin:0 auto;
+.notify-form {
+display:flex;
+gap:0.6rem;
+max-width:380px;
+margin:0 auto 1.5rem;
+flex-wrap:wrap;
+justify-content:center;
 }
-.menu-card {
-background:white; border-radius:var(–radius);
-overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.07);
-transition:transform 0.2s, box-shadow 0.2s;
-}
-.menu-card:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(0,0,0,0.11); }
-.menu-card-img {
-height:160px; display:flex; align-items:center; justify-content:center;
-font-size:4rem; background:var(–cream);
-}
-.menu-card-body { padding:1.3rem; }
-.menu-card-body h3 { font-family:‘Playfair Display’,serif; font-size:1.15rem; color:var(–text); margin-bottom:0.4rem; }
-.menu-card-body p { font-size:0.85rem; color:var(–text-soft); line-height:1.6; margin-bottom:0.8rem; }
-.menu-card-footer { display:flex; align-items:center; justify-content:space-between; }
-.menu-price { font-weight:700; color:var(–sage); font-size:1.05rem; }
-.menu-tag {
-font-size:0.75rem; background:var(–sage-pale); color:var(–sage);
-padding:0.2rem 0.6rem; border-radius:20px; font-weight:600;
-}
-.menu-tag.rotating { background:var(–amber-pale); color:var(–amber); }
-.sold-out-tag {
-font-size:0.75rem; background:#FFE8E8; color:#C0392B;
-padding:0.2rem 0.6rem; border-radius:20px; font-weight:600;
-}
-
-/* ===== ORDER ===== */
-.order-layout {
-max-width:780px; margin:0 auto; padding:2.5rem 2rem;
-}
-.order-notice {
-background:var(–amber-pale); border:1.5px solid var(–amber-light);
-border-radius:var(–radius); padding:1.2rem 1.5rem;
-margin-bottom:2rem; display:flex; gap:0.8rem; align-items:flex-start;
-}
-.order-notice-icon { font-size:1.3rem; flex-shrink:0; }
-.order-notice p { font-size:0.88rem; color:var(–text); line-height:1.6; }
-.order-notice strong { color:var(–amber); }
-
-.order-section { margin-bottom:2rem; }
-.order-section h2 { font-family:‘Playfair Display’,serif; font-size:1.4rem; color:var(–sage); margin-bottom:1rem; }
-
-.order-item {
-background:white; border-radius:var(–radius);
-padding:1.2rem 1.5rem; margin-bottom:1rem;
-display:flex; align-items:center; gap:1rem;
-box-shadow:0 2px 10px rgba(0,0,0,0.06);
-}
-.order-item-emoji { font-size:2.2rem; flex-shrink:0; }
-.order-item-info { flex:1; }
-.order-item-info h3 { font-weight:700; font-size:0.97rem; margin-bottom:0.2rem; }
-.order-item-info p { font-size:0.82rem; color:var(–text-soft); }
-.order-item-price { font-weight:700; color:var(–sage); font-size:1rem; margin-right:0.5rem; }
-.qty-control { display:flex; align-items:center; gap:0.5rem; }
-.qty-btn {
-width:30px; height:30px; border-radius:50%;
-border:2px solid var(–cream-dark); background:white;
-font-size:1.1rem; cursor:pointer; font-weight:700; color:var(–sage);
-display:flex; align-items:center; justify-content:center;
-transition:all 0.15s;
-}
-.qty-btn:hover { border-color:var(–sage); background:var(–sage-pale); }
-.qty-display { font-weight:700; min-width:24px; text-align:center; }
-.stock-badge { font-size:0.72rem; color:var(–text-soft); }
-.stock-low { color:#E07B00; font-weight:600; }
-
-.order-form-grid {
-display:grid; grid-template-columns:1fr 1fr;
-gap:1rem;
-}
-.form-group { display:flex; flex-direction:column; gap:0.4rem; }
-.form-group.full { grid-column:1/-1; }
-.form-group label { font-size:0.85rem; font-weight:700; color:var(–text); }
-.form-group input, .form-group select, .form-group textarea {
-border:1.5px solid var(–cream-dark); border-radius:10px;
-padding:0.7rem 1rem; font-family:‘Nunito’,sans-serif;
-font-size:0.95rem; background:white; color:var(–text);
-transition:border-color 0.2s;
+.notify-input {
+flex:1;
+min-width:200px;
+border:1.5px solid #EDE5D0;
+border-radius:50px;
+padding:0.75rem 1.2rem;
+font-family:‘Nunito’,sans-serif;
+font-size:0.95rem;
+background:white;
+color:#3A3228;
 outline:none;
+transition:border-color 0.2s;
 }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-border-color:var(–sage);
+.notify-input:focus { border-color:#5A8F5A; }
+.notify-btn {
+background:#5A8F5A;
+color:white;
+border:none;
+border-radius:50px;
+padding:0.75rem 1.5rem;
+font-family:‘Nunito’,sans-serif;
+font-weight:700;
+font-size:0.95rem;
+cursor:pointer;
+transition:all 0.2s;
+white-space:nowrap;
 }
-.form-group textarea { resize:vertical; min-height:80px; }
+.notify-btn:hover { background:#7DB57D; transform:translateY(-1px); }
 
-.payment-placeholder {
-background:var(–blue-pale); border:1.5px dashed var(–blue);
-border-radius:var(–radius); padding:1.5rem; text-align:center;
+.success-msg {
+display:none;
+color:#5A8F5A;
+font-weight:700;
+font-size:0.95rem;
 margin-bottom:1.5rem;
 }
-.payment-placeholder p { color:var(–text-soft); font-size:0.88rem; }
-.payment-placeholder strong { color:var(–blue); display:block; margin-bottom:0.3rem; font-size:1rem; }
 
-.order-summary-box {
-background:var(–sage-pale); border-radius:var(–radius);
-padding:1.2rem 1.5rem; margin-bottom:1.5rem;
+.details {
+display:flex;
+gap:1.5rem;
+justify-content:center;
+flex-wrap:wrap;
+margin-top:1rem;
 }
-.order-summary-row { display:flex; justify-content:space-between; font-size:0.92rem; margin-bottom:0.4rem; }
-.order-summary-row.total { font-weight:700; font-size:1.05rem; border-top:1.5px solid var(–cream-dark); padding-top:0.6rem; margin-top:0.6rem; color:var(–sage); }
+.detail {
+display:flex;
+align-items:center;
+gap:0.4rem;
+font-size:0.85rem;
+color:#7A6E62;
+font-weight:600;
+}
 
-.submit-btn {
-width:100%; background:var(–sage); color:white;
-border:none; border-radius:50px; padding:1rem;
-font-family:‘Nunito’,sans-serif; font-weight:700; font-size:1.05rem;
-cursor:pointer; transition:all 0.2s;
-box-shadow:0 4px 15px rgba(90,143,90,0.3);
-}
-.submit-btn:hover { background:var(–sage-light); transform:translateY(-2px); }
-.submit-btn:disabled { background:var(–cream-dark); color:var(–text-soft); cursor:not-allowed; transform:none; box-shadow:none; }
-
-.orders-closed {
-text-align:center; padding:3rem 2rem;
-background:white; border-radius:var(–radius);
-box-shadow:0 2px 12px rgba(0,0,0,0.06);
-}
-.orders-closed h2 { font-family:‘Playfair Display’,serif; color:var(–sage); font-size:1.8rem; margin:1rem 0 0.5rem; }
-.orders-closed p { color:var(–text-soft); line-height:1.7; }
-
-/* ===== CONTACT ===== */
-.contact-layout {
-max-width:700px; margin:0 auto; padding:2.5rem 2rem;
-}
-.contact-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:2.5rem; }
-.contact-card {
-background:white; border-radius:var(–radius);
-padding:1.5rem; text-align:center;
-box-shadow:0 2px 10px rgba(0,0,0,0.06);
-}
-.contact-card-icon { font-size:2rem; margin-bottom:0.6rem; }
-.contact-card h3 { font-weight:700; font-size:0.95rem; margin-bottom:0.3rem; color:var(–sage); }
-.contact-card p { font-size:0.85rem; color:var(–text-soft); line-height:1.5; }
-
-.contact-form-card {
-background:white; border-radius:var(–radius);
-padding:2rem; box-shadow:0 2px 10px rgba(0,0,0,0.06);
-}
-.contact-form-card h2 { font-family:‘Playfair Display’,serif; color:var(–sage); margin-bottom:1.5rem; font-size:1.4rem; }
-
-/* SUCCESS STATE */
-.success-overlay {
-display:none; position:fixed; inset:0; z-index:200;
-background:rgba(247,242,232,0.97); backdrop-filter:blur(4px);
-flex-direction:column; align-items:center; justify-content:center;
-text-align:center; padding:2rem;
-}
-.success-overlay.show { display:flex; }
-.success-icon { font-size:5rem; margin-bottom:1rem; animation:pop 0.4s cubic-bezier(0.34,1.56,0.64,1); }
-@keyframes pop { from{transform:scale(0)} to{transform:scale(1)} }
-.success-overlay h2 { font-family:‘Playfair Display’,serif; font-size:2rem; color:var(–sage); margin-bottom:0.5rem; }
-.success-overlay p { color:var(–text-soft); line-height:1.7; max-width:400px; }
-.success-close { margin-top:1.5rem; }
-
-/* FOOTER */
 footer {
-background:var(–sage); color:rgba(255,255,255,0.85);
-text-align:center; padding:2rem;
-font-size:0.85rem; line-height:1.8;
-}
-footer strong { color:white; font-family:‘Playfair Display’,serif; font-size:1.1rem; display:block; margin-bottom:0.3rem; }
-
-/* STATUS BAR */
-.status-bar {
-background:var(–sage); color:white;
-text-align:center; padding:0.5rem 1rem;
-font-size:0.8rem; font-weight:600; letter-spacing:0.03em;
-}
-.status-bar.closed { background:#C0392B; }
-
-@media(max-width:600px){
-.order-form-grid { grid-template-columns:1fr; }
-.order-item { flex-wrap:wrap; }
-nav { padding:0 1rem; }
-.nav-links { gap:1rem; }
+position:fixed;
+bottom:1rem;
+left:0; right:0;
+text-align:center;
+font-size:0.78rem;
+color:#A09589;
 }
 </style>
 
 </head>
 <body>
 
-<div class="status-bar" id="statusBar">🟢 Orders are open this week — closes Thursday at 5:00 PM</div>
+<div class="bg"><span></span><span></span><span></span></div>
 
-<nav>
-  <a class="nav-logo" href="#" onclick="showPage('home')">
-    <span class="nav-logo-icon">🧁</span>
-    <span class="nav-logo-text">First Crumbs</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
-    <li><a href="#" onclick="showPage('menu')" id="nav-menu">Menu</a></li>
-    <li><a href="#" onclick="showPage('order')" id="nav-order">Order</a></li>
-    <li><a href="#" onclick="showPage('contact')" id="nav-contact">Contact</a></li>
-  </ul>
-  <button class="nav-order-btn" onclick="showPage('order')">Order Now</button>
-</nav>
+<div class="card">
+  <span class="muffin">🧁</span>
 
-<!-- ===== HOME ===== -->
+  <div class="badge">✨ Something delicious is coming</div>
 
-<div class="page active" id="page-home">
-  <section class="hero">
-    <div class="hero-bg-circles"><span></span><span></span><span></span></div>
-    <div class="hero-muffin">🧁</div>
-    <h1>Baked with <em>love</em>,<br>made at home.</h1>
-    <p class="hero-tagline">Small-batch sourdough breads and muffins, made fresh each week in Newark, CA — available for pickup at your door.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" onclick="showPage('order')">Place an Order</button>
-      <button class="btn-secondary" onclick="showPage('menu')">See This Week's Menu</button>
-    </div>
-  </section>
+  <h1>First <em>Crumbs</em></h1>
+  <div class="divider"></div>
 
-  <section class="home-features">
-    <div class="feature-card">
-      <div class="feature-icon">🌾</div>
-      <h3>Small Batch</h3>
-      <p>Every loaf and muffin is made in limited quantities — order early so you don't miss out.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">📅</div>
-      <h3>Weekly Pre-Order</h3>
-      <p>Orders open each week and close Thursday at 5 PM. Pickup is available 9 AM – 2 PM.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">🏠</div>
-      <h3>Home Pickup</h3>
-      <p>Everything is baked fresh and ready for pickup at our home in Newark, CA.</p>
-    </div>
-    <div class="feature-card">
-      <div class="feature-icon">💛</div>
-      <h3>Made with Love</h3>
-      <p>Real ingredients, real recipes, real care — every single time.</p>
-    </div>
-  </section>
+  <p class="tagline">Small-batch sourdough breads and muffins, made fresh each week with love — right here in Newark, CA.</p>
 
-  <section class="home-story">
-    <div class="home-story-inner">
-      <h2>Hi, I'm Rani 👋</h2>
-      <div class="amber-line"></div>
-      <p>First Crumbs started the way the best things do — at home, for the people I love. I'm a home baker based in Newark, CA, and I believe that food made with care tastes different. Everything I bake here is made from scratch, in small batches, with ingredients I'd feed my own family.</p>
-      <p style="margin-top:1rem;">This is a California-registered Cottage Food Operation — so you can feel good about every crumb.</p>
-    </div>
-  </section>
-</div>
+  <p style="font-size:0.9rem;color:#7A6E62;margin-bottom:1rem;font-weight:600;">Be the first to know when we open:</p>
 
-<!-- ===== MENU ===== -->
-
-<div class="page" id="page-menu">
-  <div class="page-header">
-    <h1>This Week's Menu</h1>
-    <p>Fresh, small-batch bakes made to order each week</p>
-    <span class="menu-badge">✨ Menu rotates monthly</span>
+  <div class="notify-form">
+    <input class="notify-input" type="email" id="emailInput" placeholder="your@email.com"/>
+    <button class="notify-btn" onclick="handleNotify()">Notify Me</button>
   </div>
-  <div class="menu-grid" id="menuGrid">
-    <!-- populated by JS -->
+
+  <div class="success-msg" id="successMsg">
+    🎉 You're on the list! We'll be in touch soon.
+  </div>
+
+  <div class="details">
+    <span class="detail">📍 Newark, CA</span>
+    <span class="detail">🏠 Home pickup</span>
+    <span class="detail">📅 Weekly orders</span>
   </div>
 </div>
 
-<!-- ===== ORDER ===== -->
-
-<div class="page" id="page-order">
-  <div class="page-header">
-    <h1>Place Your Order</h1>
-    <p>Orders close Thursday at 5:00 PM · Pickup 9 AM – 2 PM</p>
-  </div>
-
-  <div class="order-layout">
-    <div class="order-notice">
-      <span class="order-notice-icon">🕐</span>
-      <p>Orders for this week close <strong>Thursday at 5:00 PM</strong>. You'll receive a confirmation email once your order is placed. Pickup is from our home in Newark, CA between <strong>9 AM and 2 PM</strong> on the same day.</p>
-    </div>
-
-```
-<div id="orderContent">
-  <!-- order form or closed state rendered by JS -->
-</div>
-```
-
-  </div>
-</div>
-
-<!-- ===== CONTACT ===== -->
-
-<div class="page" id="page-contact">
-  <div class="page-header">
-    <h1>Get in Touch</h1>
-    <p>Questions? We'd love to hear from you.</p>
-  </div>
-  <div class="contact-layout">
-    <div class="contact-cards">
-      <div class="contact-card">
-        <div class="contact-card-icon">📍</div>
-        <h3>Location</h3>
-        <p>Newark, CA<br>Home pickup only<br>(address sent after order)</p>
-      </div>
-      <div class="contact-card">
-        <div class="contact-card-icon">⏰</div>
-        <h3>Pickup Hours</h3>
-        <p>Thursday<br>9:00 AM – 2:00 PM<br>Weekly</p>
-      </div>
-      <div class="contact-card">
-        <div class="contact-card-icon">📧</div>
-        <h3>Email</h3>
-        <p>hello@firstcrumbs.com</p>
-      </div>
-    </div>
-    <div class="contact-form-card">
-      <h2>Send a Message</h2>
-      <div class="order-form-grid">
-        <div class="form-group"><label>Name</label><input type="text" placeholder="Your name"/></div>
-        <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"/></div>
-        <div class="form-group full"><label>Message</label><textarea placeholder="Ask us anything..."></textarea></div>
-        <div class="form-group full">
-          <button class="submit-btn" onclick="alert('Message sent! We\'ll get back to you soon. 💛')">Send Message</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- SUCCESS OVERLAY -->
-
-<div class="success-overlay" id="successOverlay">
-  <div class="success-icon">🎉</div>
-  <h2>Order Placed!</h2>
-  <p>Thank you! A confirmation email is on its way to you. Your order will be ready for pickup <strong>Thursday between 9 AM and 2 PM</strong> at our home in Newark, CA.</p>
-  <p style="margin-top:0.8rem; font-size:0.88rem; color:#7A6E62;">Can't wait to bake for you 💛</p>
-  <div class="success-close">
-    <button class="btn-primary" onclick="closeSuccess()">Back to Home</button>
-  </div>
-</div>
-
-<footer>
-  <strong>First Crumbs 🧁</strong>
-  Newark, CA · California Class A Cottage Food Operation<br>
-  hello@firstcrumbs.com · Orders close every Thursday at 5 PM
-</footer>
+<footer>© 2025 First Crumbs · California Class A Cottage Food Operation</footer>
 
 <script>
-// ============================================================
-// CONFIG — Update this to match your Google Apps Script URL
-// ============================================================
-const APPS_SCRIPT_URL = 'https://script.google.com/a/macros/firstcrumbs.com/s/AKfycbzOrtms_7uIlBjasHy_CHcQ-pVOQDThlRHkxs8QTsPn9bniUDBWuhW_TLe7TvaM0qGTpw/exec';
-
-// ============================================================
-// MENU DATA — Admin updates this via admin panel
-// ============================================================
-let menuItems = [
-  {
-    id: 'sourdough-loaf',
-    emoji: '🍞',
-    name: 'Classic Sourdough Loaf',
-    description: 'Open-crumb, crispy crust sourdough made with 100% bread flour. Bulk-fermented overnight for maximum flavour.',
-    price: 12,
-    tag: 'Signature',
-    tagType: '',
-    maxQty: 10,
-    available: true,
-  },
-  {
-    id: 'sourdough-focaccia',
-    emoji: '🫓',
-    name: 'Sourdough Focaccia',
-    description: 'Dimpled, olive-oil-kissed focaccia with flaky sea salt and fresh rosemary. Perfect for sharing.',
-    price: 10,
-    tag: 'Signature',
-    tagType: '',
-    maxQty: 8,
-    available: true,
-  },
-  {
-    id: 'blueberry-muffins',
-    emoji: '🫐',
-    name: 'Blueberry Muffins',
-    description: 'Fluffy, golden-topped muffins bursting with fresh blueberries. Made with whole ingredients — Ro-approved.',
-    price: 8,
-    tag: 'This Month',
-    tagType: 'rotating',
-    maxQty: 12,
-    available: true,
-  },
-  {
-    id: 'sourdough-english-muffins',
-    emoji: '🥯',
-    name: 'Sourdough English Muffins (6-pack)',
-    description: 'Nooks-and-crannies sourdough discard English muffins, griddle-toasted to perfection.',
-    price: 9,
-    tag: 'This Month',
-    tagType: 'rotating',
-    maxQty: 8,
-    available: true,
-  },
-];
-
-let cart = {};
-
-// ============================================================
-// ORDERS OPEN/CLOSED LOGIC
-// ============================================================
-function isOrderOpen() {
-  const now = new Date();
-  const day = now.getDay(); // 0=Sun, 4=Thu
-  const hour = now.getHours();
-  // Closed Thursday after 5pm through next week's opening (Monday)
-  if (day === 4 && hour >= 17) return false;
-  if (day === 5 || day === 6 || day === 0) return false;
-  return true;
-}
-
-// ============================================================
-// PAGE NAVIGATION
-// ============================================================
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('nav-' + name).classList.add('active');
-  window.scrollTo(0, 0);
-
-  if (name === 'menu') renderMenu();
-  if (name === 'order') renderOrderPage();
-  return false;
-}
-
-// ============================================================
-// MENU RENDER
-// ============================================================
-function renderMenu() {
-  const grid = document.getElementById('menuGrid');
-  grid.innerHTML = menuItems.map(item => `
-    <div class="menu-card">
-      <div class="menu-card-img">${item.emoji}</div>
-      <div class="menu-card-body">
-        <h3>${item.name}</h3>
-        <p>${item.description}</p>
-        <div class="menu-card-footer">
-          <span class="menu-price">$${item.price}</span>
-          ${item.available
-            ? `<span class="menu-tag ${item.tagType}">${item.tag}</span>`
-            : `<span class="sold-out-tag">Sold Out</span>`}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-// ============================================================
-// ORDER PAGE RENDER
-// ============================================================
-function renderOrderPage() {
-  const el = document.getElementById('orderContent');
-  const bar = document.getElementById('statusBar');
-
-  if (!isOrderOpen()) {
-    bar.className = 'status-bar closed';
-    bar.textContent = '🔴 Orders are closed for this week — check back Monday!';
-    el.innerHTML = `
-      <div class="orders-closed">
-        <div style="font-size:3rem">🌙</div>
-        <h2>Orders are closed</h2>
-        <p>We close orders on Thursday at 5 PM to get baking! Orders reopen on Monday. Follow us on Instagram to see what's coming next week 💛</p>
-      </div>`;
+function handleNotify() {
+  const email = document.getElementById('emailInput').value;
+  if (!email || !email.includes('@')) {
+    alert('Please enter a valid email address.');
     return;
   }
-
-  bar.className = 'status-bar';
-  bar.textContent = '🟢 Orders are open this week — closes Thursday at 5:00 PM';
-
-  el.innerHTML = `
-    <div class="order-section">
-      <h2>1. Choose Your Items</h2>
-      ${menuItems.map(item => {
-        const qty = cart[item.id] || 0;
-        const remaining = item.maxQty - qty;
-        return `
-        <div class="order-item">
-          <div class="order-item-emoji">${item.emoji}</div>
-          <div class="order-item-info">
-            <h3>${item.name}</h3>
-            <p>$${item.price} each · <span class="stock-badge ${remaining <= 3 ? 'stock-low' : ''}">${remaining} left this week</span></p>
-          </div>
-          <span class="order-item-price">$${item.price}</span>
-          <div class="qty-control">
-            <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
-            <span class="qty-display" id="qty-${item.id}">${qty}</span>
-            <button class="qty-btn" onclick="updateQty('${item.id}', 1)" ${qty >= item.maxQty ? 'disabled' : ''}>+</button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <div class="order-section">
-      <h2>2. Pickup Details</h2>
-      <div class="order-form-grid">
-        <div class="form-group"><label>First Name *</label><input type="text" id="fname" placeholder="First name" required/></div>
-        <div class="form-group"><label>Last Name *</label><input type="text" id="lname" placeholder="Last name" required/></div>
-        <div class="form-group full"><label>Email Address *</label><input type="email" id="email" placeholder="your@email.com" required/></div>
-        <div class="form-group full"><label>Phone (optional)</label><input type="tel" id="phone" placeholder="(510) 000-0000"/></div>
-        <div class="form-group full">
-          <label>Preferred Pickup Time *</label>
-          <select id="pickupTime">
-            <option value="">Select a time window...</option>
-            <option value="9am-10am">9:00 AM – 10:00 AM</option>
-            <option value="10am-11am">10:00 AM – 11:00 AM</option>
-            <option value="11am-12pm">11:00 AM – 12:00 PM</option>
-            <option value="12pm-1pm">12:00 PM – 1:00 PM</option>
-            <option value="1pm-2pm">1:00 PM – 2:00 PM</option>
-          </select>
-        </div>
-        <div class="form-group full"><label>Allergies or Notes</label><textarea id="notes" placeholder="Any allergies, special requests, or notes for us..."></textarea></div>
-
-```
-  </div>
-</div>
-
-<div class="order-section">
-  <h2>3. Payment</h2>
-  <div class="payment-placeholder">
-    <strong>💳 Payment Coming Soon</strong>
-    <p>Payment will be collected at pickup for now. We accept cash and Venmo. Online payment will be available soon!</p>
-  </div>
-</div>
-
-<div class="order-summary-box" id="orderSummary">
-  <div class="order-summary-row"><span>Items selected</span><span id="summaryItems">0</span></div>
-  <div class="order-summary-row total"><span>Estimated Total</span><span id="summaryTotal">$0.00</span></div>
-</div>
-
-<button class="submit-btn" id="submitBtn" onclick="submitOrder()" disabled>Select items to order</button>
-```
-
-`;
-updateSummary();
+  document.querySelector('.notify-form').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+  // When your Apps Script is connected, emails can be stored here
 }
-
-// ============================================================
-// CART LOGIC
-// ============================================================
-function updateQty(id, delta) {
-const item = menuItems.find(i => i.id === id);
-if (!item) return;
-cart[id] = Math.max(0, Math.min(item.maxQty, (cart[id] || 0) + delta));
-renderOrderPage();
-}
-
-function updateSummary() {
-let totalItems = 0, totalPrice = 0;
-menuItems.forEach(item => {
-const qty = cart[item.id] || 0;
-totalItems += qty;
-totalPrice += qty * item.price;
-});
-const el = document.getElementById(‘summaryItems’);
-const tel = document.getElementById(‘summaryTotal’);
-const btn = document.getElementById(‘submitBtn’);
-if (el) el.textContent = totalItems;
-if (tel) tel.textContent = ‘$’ + totalPrice.toFixed(2);
-if (btn) {
-if (totalItems > 0) {
-btn.disabled = false;
-btn.textContent = `Place Order · $${totalPrice.toFixed(2)}`;
-} else {
-btn.disabled = true;
-btn.textContent = ‘Select items to order’;
-}
-}
-}
-
-// ============================================================
-// SUBMIT ORDER
-// ============================================================
-async function submitOrder() {
-const fname = document.getElementById(‘fname’)?.value.trim();
-const lname = document.getElementById(‘lname’)?.value.trim();
-const email = document.getElementById(‘email’)?.value.trim();
-const pickupTime = document.getElementById(‘pickupTime’)?.value;
-const notes = document.getElementById(‘notes’)?.value.trim();
-const phone = document.getElementById(‘phone’)?.value.trim();
-
-if (!fname || !lname || !email || !pickupTime) {
-alert(‘Please fill in your name, email, and pickup time to continue.’);
-return;
-}
-
-const items = menuItems
-.filter(item => (cart[item.id] || 0) > 0)
-.map(item => ({ id: item.id, name: item.name, qty: cart[item.id], price: item.price }));
-
-if (items.length === 0) { alert(‘Please add at least one item.’); return; }
-
-const total = items.reduce((sum, i) => sum + i.qty * i.price, 0);
-
-const orderData = {
-action: ‘submitOrder’,
-firstName: fname,
-lastName: lname,
-email,
-phone,
-pickupTime,
-notes,
-items,
-total,
-timestamp: new Date().toISOString(),
-};
-
-const btn = document.getElementById(‘submitBtn’);
-btn.disabled = true;
-btn.textContent = ‘Placing your order…’;
-
-try {
-await fetch(APPS_SCRIPT_URL, {
-method: ‘POST’,
-mode: ‘no-cors’,
-headers: { ‘Content-Type’: ‘application/json’ },
-body: JSON.stringify(orderData),
-});
-} catch (e) {
-// no-cors means we can’t read the response but the request went through
-}
-
-cart = {};
-document.getElementById(‘successOverlay’).classList.add(‘show’);
-}
-
-function closeSuccess() {
-document.getElementById(‘successOverlay’).classList.remove(‘show’);
-showPage(‘home’);
-}
-
-// Init
-renderMenu();
 </script>
 
 </body>
